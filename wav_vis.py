@@ -85,14 +85,17 @@ def parse_header(stream):
         print type(stream_value)
         byte = b'0x0'
         if field_value[1]:
-            byte = struct.unpack('<%dB' % (field_value[0]), stream_value.decode('utf-8'))
+            byte = struct.unpack('<%dB' % (field_value[0]*2), binascii.hexlify(stream_value))
         else:
-            byte = struct.unpack('>%dB' % (field_value[0]), binascii.hexlify(stream_value))
+            print field_value[0]
+            print len(binascii.hexlify(stream_value))
+            byte = struct.unpack('>%dB' % (field_value[0]*2), binascii.hexlify(stream_value))
+        print byte
         if field_name in NUMERIC_CONSTANTS:
-            #int(''.join(reversed(byte)).encode('hex'), 16)
-            wav_info.field_constant_values[field_name] = int(byte.encode('hex'), 16)
+            int(''.join(str(reversed(byte))).encode('hex'), 16)
+            wav_info.field_constant_values[field_name] = int(byte[0].encode('hex'), 16)
         else:
-            wav_info.field_constant_values[field_name] = byte
+            wav_info.field_constant_values[field_name] = byte[0]
 
 def parse_data_chunk(stream):
     while stream.peek():

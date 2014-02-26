@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-<<<<<<< HEAD
 """
 WAV specification:
 00---------------
